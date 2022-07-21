@@ -8,12 +8,14 @@ const { errors } = require('celebrate');
 const userRouter = require('./routes/user');
 const movieRouter = require('./routes/movie');
 const authRouter = require('./routes/auth');
+const auth = require('./middlewares/auth');
 
 const PORT = process.env.PORT || 3000;
 
 const app = express();
 app.use(bodyParser.json());
 app.use('/', authRouter);
+app.use(auth);
 app.use('/users', userRouter);
 app.use('/movies', movieRouter);
 app.use(errors());

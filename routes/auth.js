@@ -1,7 +1,8 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 
-const login = require('../controllers/login');
+const { login } = require('../controllers/login');
+const { createUser } = require('../controllers/user');
 
 router.post(
   '/signin',
@@ -23,6 +24,7 @@ router.post(
       name: Joi.string().min(2).max(30),
     }),
   }),
+  createUser,
 );
 
 module.exports = router;
