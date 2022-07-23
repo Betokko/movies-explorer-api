@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const UnauthorizedError = require('../error-classes/UnauthorizedError');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'pee-pee-poo-poo';
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
@@ -16,7 +16,7 @@ const login = (req, res, next) => {
       } else {
         bcrypt.compare(password, user.password, (error, result) => {
           if (result) {
-            const token = jwt.sign({ _id: user._id }, JWT_SECRET);
+            const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'pee-pee-poo-poo');
             return res.status(200).send({ token });
           }
           next(new UnauthorizedError('Введен неверный email или password'));
