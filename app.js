@@ -5,6 +5,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
+const cors = require('cors');
 
 // локальные импорты
 const userRouter = require('./routes/user');
@@ -25,6 +26,7 @@ const app = express();
 app.use(limiter);
 app.use(bodyParser.json());
 app.use(requestLogger); // логгер запросов
+app.use(cors({ origin: ['http://api.moviexp.nomoredomains.xyz/', 'http://localhost:3000'] }));
 app.use('/', authRouter);
 app.use(auth); // защита роутов авторизацией
 app.use('/users', userRouter);
