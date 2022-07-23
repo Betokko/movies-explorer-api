@@ -5,11 +5,11 @@ const movieSchema = new Schema({
   country: {
     type: String, required: true,
   },
-  duration: {
-    type: Number, required: true,
-  },
   director: {
     type: String, required: true,
+  },
+  duration: {
+    type: Number, required: true,
   },
   year: {
     type: String, required: true,
@@ -21,7 +21,7 @@ const movieSchema = new Schema({
     type: String, required: true, validator: (v) => validator.isURL(v),
   },
   trailerLink: {
-    type: String, required: true, validator: (v) => validator.isURL(v),
+    type: String, required: true, validator: (v) => validator.isURL(v), default: 'https://youtu.be/dQw4w9WgXcQ',
   },
   thumbnail: {
     type: String, required: true, validator: (v) => validator.isURL(v),
@@ -30,7 +30,7 @@ const movieSchema = new Schema({
     type: Schema.Types.ObjectId, ref: 'user', required: true,
   },
   movieId: {
-    type: Schema.Types.ObjectId, ref: 'movie', required: true,
+    type: Number, required: true,
   },
   nameRU: {
     type: String, required: true,

@@ -19,8 +19,8 @@ const centralizeErrorHandler = require('./middlewares/centralize-error-handler')
 const PORT = process.env.PORT || 3000;
 const DB_CONN = process.env.DB_CONN
   || 'mongodb+srv://admin:admin@cluster0.zzbidms.mongodb.net/?retryWrites=true&w=majority'; // резервания облачная БД
-
 const app = express();
+
 app.use(bodyParser.json());
 app.use(requestLogger); // логгер запросов
 app.use('/', authRouter);

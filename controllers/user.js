@@ -6,12 +6,15 @@ const ConflictError = require('../error-classes/ConflictError');
 const NotFoundError = require('../error-classes/NotFoundError');
 
 const getUser = (req, res, next) => {
-  User.findById(req.params.id).then((user) => {
-    if (!user) {
-      return next(new NotFoundError('Пользователь не найден'));
-    }
-    return res.send(user);
-  });
+  User.findById(req.user._id)
+    .then((user) => {
+      const { name, email } = user;
+      if (!user) {
+        return next(new NotFoundError('Пользователь не найден'));
+      }
+      return res.send({ name, email });
+    })
+    .catch(next);
 };
 
 const updateUser = (req, res, next) => {
@@ -25,11 +28,11 @@ const updateUser = (req, res, next) => {
       if (!user) {
         next(new NotFoundError('Пользователь не найден'));
       }
-      res.send(user);
+      res.send({ email, name });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError('Некорректные данные при создании карточки'));
+        next(new BadRequestError('Некорректные данные при обновлении информации о пользователе'));
       } else {
         next(err);
       }
@@ -39,11 +42,7 @@ const updateUser = (req, res, next) => {
 const createUser = (req, res, next) => {
   const { email, password, name } = req.body;
   if (!email || !password || !name) {
-    next(
-      new BadRequestError(
-        'Поля: name, email или password не могут быть пустыми!',
-      ),
-    );
+    next(new BadRequestError('Поля: name, email или password не могут быть пустыми!'));
   }
   return User.findOne({ email }).then((user) => {
     if (user) {
@@ -52,14 +51,10 @@ const createUser = (req, res, next) => {
       bcrypt
         .hash(password, 10)
         .then((hash) => User.create({ email, password: hash, name }))
-        .then((response) => res.status(200).send({ email: response.email, name: response.name }))
+        .then((response) => res.status(201).send({ email: response.email, name: response.name }))
         .catch((err) => {
           if (err.name === 'ValidationError') {
-            next(
-              new BadRequestError(
-                'Некорректные данные при создании пользователя',
-              ),
-            );
+            next(new BadRequestError('Некорректные данные при создании пользователя'));
           } else {
             next(err);
           }
