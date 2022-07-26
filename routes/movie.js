@@ -18,7 +18,7 @@ router.post(
       image: Joi.string()
         .required()
         .custom((link) => validateURL(link)),
-      trailer: Joi.any(),
+      trailerLink: Joi.any(),
       nameRU: Joi.string().required(),
       nameEN: Joi.string().required(),
       thumbnail: Joi.string()

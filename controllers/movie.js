@@ -1,6 +1,7 @@
 const Movie = require('../models/movie');
 const NotFoundError = require('../error-classes/NotFoundError');
 const BadRequestError = require('../error-classes/BadRequestError');
+const ForbiddenError = require('../error-classes/ForbiddenError');
 
 const getMovies = (req, res, next) => {
   Movie.find({})
@@ -16,7 +17,7 @@ const createMovie = (req, res, next) => {
     year,
     description,
     image,
-    trailer,
+    trailerLink,
     nameRU,
     nameEN,
     thumbnail,
@@ -31,7 +32,7 @@ const createMovie = (req, res, next) => {
     year,
     description,
     image,
-    trailer,
+    trailerLink,
     nameRU,
     nameEN,
     thumbnail,
@@ -51,7 +52,12 @@ const createMovie = (req, res, next) => {
 const deleteMovie = (req, res, next) => {
   Movie.findById(req.params._id)
     .orFail(() => new NotFoundError('Фильм не найден'))
-    .then((movie) => movie.remove())
+    .then((movie) => {
+      if (!movie.owner.equals(req.user._id)) {
+        return next(new ForbiddenError('Нельзя удалить чужую карточку'));
+      }
+      return movie.remove();
+    })
     .then(() => res.send({ message: 'Фильм удален' }))
     .catch(next);
 };

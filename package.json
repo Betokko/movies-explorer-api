@@ -1,7 +1,7 @@
 {
   "name": "movies-explorer-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "simple movie database app",
   "main": "index.js",
   "scripts": {
     "start": "node app",
@@ -13,7 +13,7 @@
     "url": "git+https://github.com/Betokko/movies-explorer-api.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "artur nikitin",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Betokko/movies-explorer-api/issues"
@@ -38,9 +38,5 @@
     "mongoose": "^6.4.6",
     "validator": "^13.7.0",
     "winston": "^3.8.1"
-  },
-  "prettier": {
-    "singleQuote": true,
-    "trailingComma": "all"
   }
 }

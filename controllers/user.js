@@ -33,7 +33,11 @@ const updateUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError('Некорректные данные при обновлении информации о пользователе'));
+        next(
+          new BadRequestError(
+            'Некорректные данные при обновлении информации о пользователе',
+          ),
+        );
       } else {
         next(err);
       }
@@ -42,13 +46,6 @@ const updateUser = (req, res, next) => {
 
 const createUser = (req, res, next) => {
   const { email, password, name } = req.body;
-  if (!email || !password || !name) {
-    next(
-      new BadRequestError(
-        'Поля: name, email или password не могут быть пустыми!',
-      ),
-    );
-  }
   return User.findOne({ email }).then((user) => {
     if (user) {
       next(new ConflictError('Такой пользователь уже существует'));
