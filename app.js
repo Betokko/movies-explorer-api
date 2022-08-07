@@ -22,7 +22,7 @@ const app = express();
 app.use(requestLogger); // логгер запросов
 app.use(bodyParser.json());
 app.use(limiter);
-app.use(cors({ origin: ['http://api.moviexp.nomoredomains.xyz/', 'http://localhost:3000'] }));
+app.use(cors({ origin: ['http://api.moviexp.nomoredomains.xyz', 'http://localhost:3000'] }));
 app.use(routes);
 app.use(errorLogger); // логгер ошибок
 app.use(errors()); // обработчик ошибок celebrate
